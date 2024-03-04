@@ -5,6 +5,7 @@ open System.Threading.Tasks
 open Discord
 open Discord.WebSocket
 open FSharp.Data.JsonProvider
+open Wrapper.SlashCommandBuilder
 
 module Bot =
     type Secrets = JsonProvider<"""../secrets.json""">
@@ -18,6 +19,11 @@ module Bot =
             
         let client = new DiscordSocketClient()
         client.add_Log log
+        
+        let command =
+            newSlashCommand
+            |> withName "e"
+            |> withDescription "a"
         
         do! client.LoginAsync(TokenType.Bot, secrets.ApiKey)
         do! client.StartAsync()

@@ -6,12 +6,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
         <Compile Include="Library.fs"/>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Discord.Net" Version="3.13.1" />
       <PackageReference Include="FSharp.Data.JsonProvider" Version="0.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Wrapper\" />
     </ItemGroup>
 
 </Project>
