@@ -1,3 +1,5 @@
 ﻿open Bot
 
-Say.hello "world"
+Bot.start
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
