@@ -1,5 +1,6 @@
 ﻿namespace Bot
 
+open System
 open System.IO
 open System.Threading.Tasks
 open Discord
@@ -8,25 +9,33 @@ open FSharp.Data.JsonProvider
 open Wrapper.SlashCommandBuilder
 
 module Bot =
-    type Secrets = JsonProvider<"""../secrets.json""">
+    let ready (client: IDiscordClient) (): Task = task {
+        let! guild = client.GetGuildAsync(543719732100988943UL)
+        
+        let builder =
+            newSlashCommand
+            |> withName "cool"
+            |> withDescription "cool command"
+            
+        do! guild.CreateApplicationCommandAsync(builder.Build()) |> Async.AwaitTask |> Async.Ignore
+        
+        ()
+    }
     
     let start = task {
         let log (message: LogMessage): Task =
             printfn $"%s{message.ToString()}"
             Task.CompletedTask
             
-        let secrets = Secrets.Parse(File.ReadLines("../../../../secrets.json") |> String.concat "")
-            
         let client = new DiscordSocketClient()
         client.add_Log log
         
-        let command =
-            newSlashCommand
-            |> withName "e"
-            |> withDescription "a"
+        let apiKey = System.Environment.GetEnvironmentVariable("API_KEY")
         
-        do! client.LoginAsync(TokenType.Bot, secrets.ApiKey)
+        do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
+        
+        client.add_Ready (ready client)
         
         do! Task.Delay(-1)
     }
