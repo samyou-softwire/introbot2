@@ -6,9 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Wrapper\" />
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
-        <Folder Include="Events\" />
         <Compile Include="Events\Ready.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>
