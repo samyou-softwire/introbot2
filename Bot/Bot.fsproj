@@ -6,7 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Wrapper\" />
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
+        <Folder Include="Events\" />
+        <Compile Include="Events\Ready.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>
 
@@ -14,9 +17,4 @@
       <PackageReference Include="Discord.Net" Version="3.13.1" />
       <PackageReference Include="FSharp.Data.JsonProvider" Version="0.5.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Wrapper\" />
-    </ItemGroup>
-
 </Project>
