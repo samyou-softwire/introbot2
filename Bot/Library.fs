@@ -30,7 +30,7 @@ module Bot =
         let client = new DiscordSocketClient()
         client.add_Log log
         
-        let apiKey = System.Environment.GetEnvironmentVariable("API_KEY")
+        let apiKey = Environment.GetEnvironmentVariable("API_KEY")
         
         do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
