@@ -4,8 +4,11 @@ open Discord
 
 let newSlashCommand = SlashCommandBuilder()
 
-let withName (name: string) (builder: SlashCommandBuilder): SlashCommandBuilder =
+let withCommandName (name: string) (builder: SlashCommandBuilder): SlashCommandBuilder =
     builder.WithName(name)
 
-let withDescription (name: string) (builder: SlashCommandBuilder): SlashCommandBuilder =
+let withCommandDescription (name: string) (builder: SlashCommandBuilder): SlashCommandBuilder =
     builder.WithDescription(name)
+    
+let withCommandOption (optionBuilder: SlashCommandOptionBuilder) (builder: SlashCommandBuilder): SlashCommandBuilder =
+    builder.AddOption(optionBuilder)
