@@ -8,6 +8,7 @@
     <ItemGroup>
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
         <Compile Include="Events\Ready.fs" />
+        <Compile Include="Events\SlashCommandExecuted.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>
 
