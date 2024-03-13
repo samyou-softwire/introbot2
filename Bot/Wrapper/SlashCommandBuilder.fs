@@ -45,3 +45,30 @@ let handler (name: string) (age: int) (context: string) =
     ()
     
 func2 command handler
+    
+// (string -> string -> number) -> client -> string
+
+// newBuilder  -- create the builder which can bind a IDiscordClient -> string command
+// the object has no methods
+// hence there can be a bind function which takes
+// builder: CommandBuilder<'a> f: 'a
+
+let a: string -> int -> IDiscordClient -> string = ()
+
+let bind: (string -> int -> IDiscordClient -> string) -> unit = ()
+
+type CoolBuilder<'a> = CoolBuilderValue
+
+let bindx (builder: CoolBuilder<'a>) (handler: 'a) = ()
+
+let newBuilder: CoolBuilder<IDiscordClient -> string> = CoolBuilderValue
+
+let withString<'a> (builder: CoolBuilder<'a>): CoolBuilder<string -> 'a> = CoolBuilderValue
+
+let withNumber<'a> (builder: CoolBuilder<'a>): CoolBuilder<int -> 'a> = CoolBuilderValue
+
+let builderOfCool = withNumber (withString newBuilder)
+
+let handler x y client = "5"
+
+bindx builderOfCool handler
