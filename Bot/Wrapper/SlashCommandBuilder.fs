@@ -7,6 +7,11 @@ type CommandBuilder<'a> = {
     innerBuilder: SlashCommandBuilder
 }
 
+type BuiltCommand<'a> = {
+    innerBuilder: SlashCommandBuilder
+    handler: 'a
+}
+
 let newSlashCommand: CommandBuilder<IDiscordClient -> string> = {
     innerBuilder = SlashCommandBuilder() 
 }
@@ -23,11 +28,7 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     innerBuilder = builder.innerBuilder.AddOption(optionBuilder.innerBuilder) 
 }
 
-let command =
-    newSlashCommand
-    |> withCommandName "typed cool"
-    |> withCommandDescription "but will it bind?"
-    |> withCommandOption (
-        newStringOption
-        |> withOptionName "whos cool"
-        |> withOptionDescription "find out who it is!" )
+let withHandler<'a> (handler: 'a) (builder: CommandBuilder<'a>) = {
+    innerBuilder = builder.innerBuilder
+    handler = handler
+}
