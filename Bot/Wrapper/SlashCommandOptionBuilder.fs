@@ -2,16 +2,26 @@
 
 open Discord
 
-let newSlashCommandOption = SlashCommandOptionBuilder()
+type CommandOptionBuilder<'a> = {
+    innerBuilder: SlashCommandOptionBuilder
+}
 
-let withOptionName (name: string) (builder: SlashCommandOptionBuilder): SlashCommandOptionBuilder =
-    builder.WithName(name)
+let newStringOption: CommandOptionBuilder<string> = {
+    innerBuilder = SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.String) 
+} 
 
-let withOptionDescription (description: string) (builder: SlashCommandOptionBuilder): SlashCommandOptionBuilder =
-    builder.WithDescription(description)
+let newIntegerOption: CommandOptionBuilder<int> = {
+    innerBuilder = SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.Integer) 
+}
 
-let withOptionType (type_: ApplicationCommandOptionType) (builder: SlashCommandOptionBuilder): SlashCommandOptionBuilder =
-    builder.WithType(type_)
+let withOptionName<'a> (name: string) (builder: CommandOptionBuilder<'a>): CommandOptionBuilder<'a> = {
+    innerBuilder = builder.innerBuilder.WithName(name) 
+}
 
-let withOptionRequired (isRequired: bool) (builder: SlashCommandOptionBuilder): SlashCommandOptionBuilder =
-    builder.WithRequired(isRequired)
+let withOptionDescription<'a> (description: string) (builder: CommandOptionBuilder<'a>): CommandOptionBuilder<'a> = {
+    innerBuilder = builder.innerBuilder.WithDescription(description) 
+}
+
+let withOptionRequired<'a> (isRequired: bool) (builder: CommandOptionBuilder<'a>): CommandOptionBuilder<'a> = {
+    innerBuilder = builder.innerBuilder.WithRequired(isRequired)
+}
