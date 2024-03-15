@@ -41,6 +41,6 @@ let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> stri
     command = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
-        let handled: IDiscordClient -> SocketSlashCommand -> string = doHandle options handler
+        let handled = doHandle options handler
         handled client command
 }
