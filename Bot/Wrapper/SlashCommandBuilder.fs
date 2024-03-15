@@ -2,17 +2,18 @@ module Bot.Wrapper.SlashCommandBuilder
 
 open Discord
 open Bot.Wrapper.SlashCommandOptionBuilder
+open Discord.WebSocket
 
 type CommandBuilder<'a> = {
     innerBuilder: SlashCommandBuilder
 }
 
 type BuiltCommand<'a> = {
-    innerBuilder: SlashCommandBuilder
-    handler: 'a
+    command: SlashCommandProperties
+    handler: IDiscordClient -> SocketSlashCommand -> string
 }
 
-let newSlashCommand: CommandBuilder<IDiscordClient -> string> = {
+let newSlashCommand: CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = {
     innerBuilder = SlashCommandBuilder() 
 }
 
@@ -28,7 +29,18 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     innerBuilder = builder.innerBuilder.AddOption(optionBuilder.innerBuilder) 
 }
 
-let withHandler<'a> (handler: 'a) (builder: CommandBuilder<'a>) = {
-    innerBuilder = builder.innerBuilder
-    handler = handler
+let rec doHandle (options: SocketSlashCommandDataOption list) (handler: 'a) =
+    match box handler with
+    | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> f
+    | :? (obj -> IDiscordClient -> SocketSlashCommand -> string) as f ->
+        let arg = options.Head.Value
+        f arg
+    | _ -> failwith("incorrect handler has been bound")
+
+let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> string) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> string>) = {
+    command = builder.innerBuilder.Build()
+    handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
+        let options = List.ofSeq command.Data.Options
+        let handled: IDiscordClient -> SocketSlashCommand -> string = doHandle options handler
+        handled client command
 }

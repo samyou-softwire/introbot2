@@ -3,7 +3,7 @@ module Bot.Commands.Cool
 open Bot.Wrapper.SlashCommandBuilder
 open Bot.Wrapper.SlashCommandOptionBuilder
 
-let coolCommandHandler (name: string) _ = $"{name} is cool!" 
+let coolCommandHandler (name: string) _ _ = $"{name} is cool!" 
 
 let coolCommand =
     newSlashCommand
