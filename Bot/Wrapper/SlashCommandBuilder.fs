@@ -29,12 +29,12 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     innerBuilder = builder.innerBuilder.AddOption(optionBuilder.innerBuilder) 
 }
 
-let rec doHandle (options: SocketSlashCommandDataOption list) (handler: 'a) =
+let rec doHandle (options: SocketSlashCommandDataOption list) (handler: obj) =
     match box handler with
     | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> f
     | :? (obj -> IDiscordClient -> SocketSlashCommand -> string) as f ->
         let arg = options.Head.Value
-        f arg
+        doHandle options (f arg)
     | _ -> failwith("incorrect handler has been bound")
 
 let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> string) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> string>) = {
