@@ -10,7 +10,7 @@ type CommandBuilder<'a> = {
 
 type BuiltCommand<'a> = {
     properties: SlashCommandProperties
-    handler: IDiscordClient -> SocketSlashCommand -> string option
+    handler: IDiscordClient -> SocketSlashCommand -> string
 }
 
 let newSlashCommand: CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = {
@@ -31,18 +31,18 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
 
 let rec doHandle (options: SocketSlashCommandDataOption list) (handler: obj) =
     match box handler with
-    | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> Some f
+    | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> f
     | :? (obj -> IDiscordClient -> SocketSlashCommand -> string) as f ->
         let head = options.Head
         // TODO: this can probably be lots more functional
         match box f with
         | :? (string -> obj) ->
             if (head.Type = ApplicationCommandOptionType.String) then doHandle options (f head.Value)
-            else None
+            else failwith("incorrect arg")
         | :? (int -> obj) ->
             if (head.Type = ApplicationCommandOptionType.Integer) then doHandle options (f head.Value)
-            else None
-        | _ -> None
+            else failwith("incorrect arg")
+        | _ -> failwith("unknown arg type")
             
         
     | _ -> failwith("incorrect handler has been bound")
@@ -52,7 +52,5 @@ let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> stri
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
         let handled = doHandle options handler
-        match handled with
-        | Some matchingHandled -> Some <| matchingHandled client command
-        | None -> None
+        handled client command
 }
