@@ -9,8 +9,8 @@ type CommandBuilder<'a> = {
 }
 
 type BuiltCommand<'a> = {
-    command: SlashCommandProperties
-    handler: IDiscordClient -> SocketSlashCommand -> string
+    properties: SlashCommandProperties
+    handler: IDiscordClient -> SocketSlashCommand -> string option
 }
 
 let newSlashCommand: CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = {
@@ -31,16 +31,28 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
 
 let rec doHandle (options: SocketSlashCommandDataOption list) (handler: obj) =
     match box handler with
-    | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> f
+    | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> Some f
     | :? (obj -> IDiscordClient -> SocketSlashCommand -> string) as f ->
-        let arg = options.Head.Value
-        doHandle options (f arg)
+        let head = options.Head
+        // TODO: this can probably be lots more functional
+        match box f with
+        | :? (string -> obj) ->
+            if (head.Type = ApplicationCommandOptionType.String) then doHandle options (f head.Value)
+            else None
+        | :? (int -> obj) ->
+            if (head.Type = ApplicationCommandOptionType.Integer) then doHandle options (f head.Value)
+            else None
+        | _ -> None
+            
+        
     | _ -> failwith("incorrect handler has been bound")
 
 let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> string) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> string>) = {
-    command = builder.innerBuilder.Build()
+    properties = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
-        let handled: IDiscordClient -> SocketSlashCommand -> string = doHandle options handler
-        handled client command
+        let handled = doHandle options handler
+        match handled with
+        | Some matchingHandled -> Some <| matchingHandled client command
+        | None -> None
 }

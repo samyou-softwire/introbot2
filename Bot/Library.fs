@@ -4,6 +4,7 @@ open System
 open System.Threading.Tasks
 open Discord
 open Discord.WebSocket
+open Bot.Commands.Cool
 open Bot.Events.Ready
 open Bot.Events.SlashCommandExecuted
 
@@ -21,8 +22,10 @@ module Bot =
         do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
         
-        client.add_Ready (ready client)
-        client.add_SlashCommandExecuted (slashCommandExecuted client)
+        let commands = [coolCommand]
+        
+        client.add_Ready (ready client commands)
+        client.add_SlashCommandExecuted (slashCommandExecuted client commands)
         
         do! Task.Delay(-1)
     }
