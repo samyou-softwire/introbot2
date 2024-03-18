@@ -6,6 +6,7 @@ open Discord.WebSocket
 
 type CommandBuilder<'a> = {
     innerBuilder: SlashCommandBuilder
+    arguments: CommandOptionType list
 }
 
 type BuiltCommand<'a> = {
@@ -16,43 +17,35 @@ type BuiltCommand<'a> = {
 type CommandHandler = BuiltCommand<obj>
 
 let newSlashCommand: CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = {
-    innerBuilder = SlashCommandBuilder() 
+    innerBuilder = SlashCommandBuilder()
+    arguments = [] 
 }
 
-let withCommandName<'a> (name: string) (builder: CommandBuilder<'a>): CommandBuilder<'a> = {
-    innerBuilder = builder.innerBuilder.WithName(name) 
+let withCommandName<'a> (name: string) (builder: CommandBuilder<'a>): CommandBuilder<'a> = { 
+    builder with innerBuilder = builder.innerBuilder.WithName(name) 
 }
 
 let withCommandDescription<'a> (name: string) (builder: CommandBuilder<'a>): CommandBuilder<'a> = {
-    innerBuilder = builder.innerBuilder.WithDescription(name) 
+    builder with innerBuilder = builder.innerBuilder.WithDescription(name) 
 }
     
 let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder: CommandBuilder<'a>): CommandBuilder<'b -> 'a> = {
-    innerBuilder = builder.innerBuilder.AddOption(optionBuilder.innerBuilder) 
+    innerBuilder = builder.innerBuilder.AddOption(optionBuilder.innerBuilder)
+    arguments = optionBuilder._type :: builder.arguments
 }
 
 let rec doHandle (options: SocketSlashCommandDataOption list) (handler: obj) =
-    match box handler with
-    | :? (IDiscordClient -> SocketSlashCommand -> string) as f -> f
-    | :? (obj -> IDiscordClient -> SocketSlashCommand -> string) as f ->
-        let head = options.Head
-        // TODO: this can probably be lots more functional
-        match box f with
-        | :? (string -> obj) ->
-            if (head.Type = ApplicationCommandOptionType.String) then doHandle options (f head.Value)
-            else failwith("incorrect arg")
-        | :? (int -> obj) ->
-            if (head.Type = ApplicationCommandOptionType.Integer) then doHandle options (f head.Value)
-            else failwith("incorrect arg")
-        | _ -> failwith("unknown arg type")
-            
-        
-    | _ -> failwith("incorrect handler has been bound")
+    match options with
+    | [] -> handler
+    | x :: xs ->
+        let result = (handler :?> obj -> obj) x.Value
+        doHandle xs result
 
 let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> string) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> string>) = {
     properties = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
-        let handled = doHandle options handler
-        handled client command
+        let handled = (doHandle options handler)
+        let handledCast = handled :?> IDiscordClient -> SocketSlashCommand -> string
+        handledCast client command
 }
