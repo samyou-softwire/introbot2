@@ -13,6 +13,8 @@ type BuiltCommand<'a> = {
     handler: IDiscordClient -> SocketSlashCommand -> string
 }
 
+type CommandHandler = BuiltCommand<obj>
+
 let newSlashCommand: CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = {
     innerBuilder = SlashCommandBuilder() 
 }

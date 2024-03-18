@@ -5,18 +5,13 @@ open Discord
 open Discord.WebSocket
 open Bot.Wrapper.SlashCommandBuilder
 
-let slashCommandExecuted (client: IDiscordClient) (commands: BuiltCommand<obj> list) (command: SocketSlashCommand): Task = task {
-    let folder (acc: string option) (cur: BuiltCommand<obj>) =
-        match acc with
-        | Some x -> Some x
-        | None -> cur.handler client command
+let slashCommandExecuted (client: IDiscordClient) (commands: CommandHandler list) (command: SocketSlashCommand): Task = task {
+    let hasName (handler: CommandHandler) =
+        handler.properties.Name.GetValueOrDefault() = command.CommandName
+        
+    let commandHandler = List.find hasName commands
     
-    let result = List.fold folder None commands
-    
-    let response =
-        match result with
-        | Some response -> response
-        | None -> "Command not found!"
+    let response = commandHandler.handler client command
         
     do! command.RespondAsync(response)
     
