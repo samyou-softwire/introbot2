@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Reflection.fs" />
         <Compile Include="Wrapper\SlashCommandOptionBuilder.fs" />
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
         <Compile Include="Events\Ready.fs" />

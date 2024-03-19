@@ -2,6 +2,7 @@ module Bot.Wrapper.SlashCommandBuilder
 
 open Discord
 open Bot.Wrapper.SlashCommandOptionBuilder
+open Bot.Reflection
 open Discord.WebSocket
 
 type CommandBuilder<'a> = {
@@ -34,18 +35,10 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     arguments = optionBuilder._type :: builder.arguments
 }
 
-let rec doHandle (options: SocketSlashCommandDataOption list) (handler: obj) =
-    match options with
-    | [] -> handler
-    | x :: xs ->
-        let result = (handler :?> obj -> obj) x.Value
-        doHandle xs result
-
 let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> string) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> string>) = {
     properties = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
         let handled = (doHandle options handler)
-        let handledCast = handled :?> IDiscordClient -> SocketSlashCommand -> string
-        handledCast client command
+        (handled client command) :?> string
 }
