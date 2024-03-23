@@ -10,16 +10,20 @@ let downloadWithExecutable path url filename =
     startInfo.WindowStyle <- ProcessWindowStyle.Hidden
     startInfo.Arguments <- $" -P intro-cache -o {filename} -x -q {url}"
     
-    using (Process.Start(startInfo)) <| fun dlProcess ->
-        dlProcess.WaitForExit()
-        
+    use dlProcess = Process.Start(startInfo)
+    dlProcess.WaitForExit()
+    
     ()
     
 let downloadWindows =
+    downloadWithExecutable "./downloaded-binaries/yt-dlp"
+    
+let downloadLinux =
     downloadWithExecutable "./downloaded-binaries/yt-dlp"
 
 let download: string -> string -> unit =
     let platform = System.Environment.GetEnvironmentVariable("PLATFORM")
     match platform with
     | "windows" -> downloadWindows
+    | "linux" -> downloadLinux
     | _ -> failwith "no platform set"

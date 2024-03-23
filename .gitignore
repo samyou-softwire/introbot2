@@ -6,3 +6,4 @@ riderModule.iml
 .idea/
 .env
 /downloaded-binaries
+/intro-cache
