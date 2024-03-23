@@ -11,7 +11,7 @@ let slashCommandExecuted (client: IDiscordClient) (commands: CommandHandler list
         
     let commandHandler = List.find hasName commands
     
-    let response = commandHandler.handler client command
+    let! response = commandHandler.handler client command
         
     do! command.RespondAsync(response)
     

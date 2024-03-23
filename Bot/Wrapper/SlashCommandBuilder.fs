@@ -1,5 +1,6 @@
 module Bot.Wrapper.SlashCommandBuilder
 
+open System.Threading.Tasks
 open Discord
 open Bot.Wrapper.SlashCommandOptionBuilder
 open Bot.Reflection
@@ -12,12 +13,12 @@ type CommandBuilder<'a> = {
 
 type BuiltCommand<'a> = {
     properties: SlashCommandProperties
-    handler: IDiscordClient -> SocketSlashCommand -> string
+    handler: IDiscordClient -> SocketSlashCommand -> Task<string>
 }
 
 type CommandHandler = BuiltCommand<obj>
 
-let newSlashCommand: unit -> CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = fun _ -> {
+let newSlashCommand: unit -> CommandBuilder<IDiscordClient -> SocketSlashCommand -> Task<string>> = fun _ -> {
     innerBuilder = SlashCommandBuilder()
     arguments = [] 
 }
@@ -35,10 +36,10 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     arguments = optionBuilder._type :: builder.arguments
 }
 
-let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> string) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> string>) = {
+let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> Task<string>) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> Task<string>>) = {
     properties = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
         let handled = (doHandle options handler)
-        (handled client command) :?> string
+        (handled client command) :?> Task<string>
 }
