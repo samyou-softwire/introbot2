@@ -24,16 +24,6 @@ module Bot =
         do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
         
-        let startInfo = ProcessStartInfo()
-        startInfo.CreateNoWindow <- true
-        startInfo.UseShellExecute <- false
-        startInfo.FileName <- "./downloaded-binaries/yt-dlp"
-        startInfo.WindowStyle <- ProcessWindowStyle.Hidden
-        startInfo.Arguments <- " -P intro-cache -o 123.%(ext)s -x -q https://music.youtube.com/watch?v=b3xUfGnrpUg"
-        
-        using (Process.Start(startInfo)) <| fun dlProcess ->
-            dlProcess.WaitForExit()
-        
         let commands = [coolCommand; playCommand]
         
         client.add_Ready (ready client commands)

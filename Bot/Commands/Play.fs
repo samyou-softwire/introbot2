@@ -7,7 +7,7 @@ open Bot.Wrapper.SlashCommandBuilder
 open Bot.Wrapper.SlashCommandOptionBuilder
 
 let playCommandHandler (url: string) (client: IDiscordClient) (command: SocketSlashCommand) =
-    download url
+    download url $"{command.User.Id}.%%(ext)s"
     "download complete"
     
 let playCommand =
