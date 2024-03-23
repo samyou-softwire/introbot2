@@ -1,6 +1,7 @@
 ﻿namespace Bot
 
 open System
+open System.Diagnostics
 open System.Threading.Tasks
 open Discord
 open Discord.WebSocket
@@ -21,6 +22,16 @@ module Bot =
         
         do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
+        
+        let startInfo = ProcessStartInfo()
+        startInfo.CreateNoWindow <- true
+        startInfo.UseShellExecute <- false
+        startInfo.FileName <- "/downloaded-binaries/yt-dlp"
+        startInfo.WindowStyle <- ProcessWindowStyle.Hidden
+        
+        using (Process.Start(startInfo)) <| fun dlProcess ->
+            dlProcess.WaitForExit()
+        
         
         let commands = [coolCommand]
         
