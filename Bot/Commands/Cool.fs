@@ -6,11 +6,11 @@ open Bot.Wrapper.SlashCommandOptionBuilder
 let coolCommandHandler (name: string) _ _ = $"{name} is cool!" 
 
 let coolCommand =
-    newSlashCommand
+    newSlashCommand()
     |> withCommandName "cool"
     |> withCommandDescription "but will it bind?"
     |> withCommandOption (
-        newStringOption
+        newStringOption()
         |> withOptionName "who"
         |> withOptionDescription "find out who it is!" )
     |> withHandler coolCommandHandler

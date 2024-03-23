@@ -11,11 +11,11 @@ let playCommandHandler (url: string) (client: IDiscordClient) (command: SocketSl
     "download complete"
     
 let playCommand =
-    newSlashCommand
+    newSlashCommand()
     |> withCommandName "play"
     |> withCommandDescription "test play a track"
     |> withCommandOption (
-        newStringOption
-        |> withOptionName "url"
+        newStringOption()
+        |> withOptionName "urlly"
         |> withOptionDescription "youtube url" )
     |> withHandler playCommandHandler

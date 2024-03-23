@@ -11,7 +11,7 @@ type CommandOptionBuilder<'a> = {
     _type: CommandOptionType
 }
 
-let newStringOption: CommandOptionBuilder<string> = {
+let newStringOption: unit -> CommandOptionBuilder<string> = fun _ -> {
     innerBuilder = SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.String)
     _type = String 
 } 

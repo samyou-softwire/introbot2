@@ -17,7 +17,7 @@ type BuiltCommand<'a> = {
 
 type CommandHandler = BuiltCommand<obj>
 
-let newSlashCommand: CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = {
+let newSlashCommand: unit -> CommandBuilder<IDiscordClient -> SocketSlashCommand -> string> = fun _ -> {
     innerBuilder = SlashCommandBuilder()
     arguments = [] 
 }
