@@ -11,7 +11,9 @@
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
         <Compile Include="Events\Ready.fs" />
         <Compile Include="Events\SlashCommandExecuted.fs" />
+        <Compile Include="Music\Download.fs" />
         <Compile Include="Commands\Cool.fs" />
+        <Compile Include="Commands\Play.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>
 
