@@ -8,8 +8,8 @@ open Bot.Wrapper.SlashCommandOptionBuilder
 
 let setIntroCommandHandler (url: string) (client: IDiscordClient) (command: SocketSlashCommand) = task {
     do! command.RespondAsync("downloading")
-    do! download url $"intro-{command.User.Id}.%%(ext)s"
-    do! command.ModifyOriginalResponseAsync(fun message -> message.Content <- "done")
+    let! success = download url $"intro-{command.User.Id}.%%(ext)s"
+    do! command.ModifyOriginalResponseAsync(fun message -> message.Content <- if success then "done" else "error")
         |> Async.AwaitTask |> Async.Ignore
 }
     
