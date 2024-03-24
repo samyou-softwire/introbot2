@@ -7,6 +7,7 @@ open Discord.WebSocket
 open Bot.Commands.DownloadCommands
 open Bot.Events.Ready
 open Bot.Events.SlashCommandExecuted
+open Bot.Events.UserVoiceStateUpdated
 
 module Bot =
     let start = task {
@@ -26,6 +27,7 @@ module Bot =
         
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
+        client.add_UserVoiceStateUpdated (userVoiceStateUpdated)
         
         do! Task.Delay(-1)
     }
