@@ -11,7 +11,9 @@ let slashCommandExecuted (client: IDiscordClient) (commands: CommandHandler list
         
     let commandHandler = List.find hasName commands
     
-    do! commandHandler.handler client command
+    commandHandler.handler client command
+        |> Async.AwaitTask
+        |> Async.Start
     
     ()
 }
