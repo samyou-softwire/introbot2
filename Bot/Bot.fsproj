@@ -9,11 +9,10 @@
         <Compile Include="Reflection.fs" />
         <Compile Include="Wrapper\SlashCommandOptionBuilder.fs" />
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
+        <Compile Include="Wrapper\YtDlp.fs" />
         <Compile Include="Events\Ready.fs" />
         <Compile Include="Events\SlashCommandExecuted.fs" />
-        <Compile Include="Music\Download.fs" />
-        <Compile Include="Commands\SetIntro.fs" />
-        <Compile Include="Commands\SetOutro.fs" />
+        <Compile Include="Commands\DownloadCommands.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>
 

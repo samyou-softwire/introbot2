@@ -4,8 +4,7 @@ open System
 open System.Threading.Tasks
 open Discord
 open Discord.WebSocket
-open Bot.Commands.SetIntro
-open Bot.Commands.SetOutro
+open Bot.Commands.DownloadCommands
 open Bot.Events.Ready
 open Bot.Events.SlashCommandExecuted
 
