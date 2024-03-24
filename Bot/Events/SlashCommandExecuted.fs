@@ -11,8 +11,7 @@ let slashCommandExecuted (client: IDiscordClient) (commands: CommandHandler list
         
     let commandHandler = List.find hasName commands
     
-    let! response = commandHandler.handler client command
-        
-    do! command.ModifyOriginalResponseAsync(fun x -> x.Content <- response) |> Async.AwaitTask |> Async.Ignore
+    do! commandHandler.handler client command
+    
     ()
 }

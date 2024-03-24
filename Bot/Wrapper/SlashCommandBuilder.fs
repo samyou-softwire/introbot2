@@ -13,12 +13,12 @@ type CommandBuilder<'a> = {
 
 type BuiltCommand<'a> = {
     properties: SlashCommandProperties
-    handler: IDiscordClient -> SocketSlashCommand -> Task<string>
+    handler: IDiscordClient -> SocketSlashCommand -> Task<unit>
 }
 
 type CommandHandler = BuiltCommand<obj>
 
-let newSlashCommand: unit -> CommandBuilder<IDiscordClient -> SocketSlashCommand -> Task<string>> = fun _ -> {
+let newSlashCommand: unit -> CommandBuilder<IDiscordClient -> SocketSlashCommand -> Task<unit>> = fun _ -> {
     innerBuilder = SlashCommandBuilder()
     arguments = [] 
 }
@@ -36,10 +36,10 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     arguments = optionBuilder._type :: builder.arguments
 }
 
-let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> Task<string>) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> Task<string>>) = {
+let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> Task<unit>) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> Task<unit>>) = {
     properties = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options
         let handled = (doHandle options handler)
-        (handled client command) :?> Task<string>
+        (handled client command) :?> Task<unit>
 }
