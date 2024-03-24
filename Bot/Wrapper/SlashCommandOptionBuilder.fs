@@ -12,7 +12,7 @@ type CommandOptionBuilder<'a> = {
 }
 
 let newStringOption: unit -> CommandOptionBuilder<string> = fun _ -> {
-    innerBuilder = SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.String)
+    innerBuilder = SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.String).WithRequired(true)
     _type = String 
 } 
 

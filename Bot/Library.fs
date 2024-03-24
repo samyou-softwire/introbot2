@@ -4,7 +4,8 @@ open System
 open System.Threading.Tasks
 open Discord
 open Discord.WebSocket
-open Bot.Commands.Play
+open Bot.Commands.SetIntro
+open Bot.Commands.SetOutro
 open Bot.Events.Ready
 open Bot.Events.SlashCommandExecuted
 
@@ -22,7 +23,7 @@ module Bot =
         do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
         
-        let commands = [playCommand]
+        let commands = [setIntroCommand; setOutroCommand]
         
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
