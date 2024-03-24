@@ -8,17 +8,8 @@ open Bot.Wrapper.SlashCommandBuilder
 open Bot.Wrapper.SlashCommandOptionBuilder
 
 let playCommandHandler (url: string) (client: IDiscordClient) (command: SocketSlashCommand) = task {
-    let onStart = task {
-        do! command.DeferAsync()
-        printf "onstart2!"
-    }
-    
-    let onEnd = task {
-        do! command.FollowupAsync("done!") |> Async.AwaitTask |> Async.Ignore
-        printf "onend2!"
-    }
-    
-    do! download url $"{command.User.Id}.%%(ext)s" onStart onEnd
+    do! command.RespondAsync("downloading")
+    do! download url $"{command.User.Id}.%%(ext)s"
     return "download complete"
 }
     

@@ -13,7 +13,6 @@ let slashCommandExecuted (client: IDiscordClient) (commands: CommandHandler list
     
     let! response = commandHandler.handler client command
         
-    do! command.RespondAsync(response)
-    
+    do! command.ModifyOriginalResponseAsync(fun x -> x.Content <- response) |> Async.AwaitTask |> Async.Ignore
     ()
 }
