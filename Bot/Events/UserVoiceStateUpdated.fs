@@ -11,7 +11,7 @@ let joinAndPlay (path: string) (channel: SocketVoiceChannel) = task {
 }
 
 let playTheme (theme: string) (user: SocketUser) (channel: SocketVoiceChannel) = task {
-    do! joinAndPlay $"./intro-cache/{theme}-{user.Id}.opus" channel
+    do! joinAndPlay $"./theme-cache/{theme}-{user.Id}.opus" channel
     ()
 }
 

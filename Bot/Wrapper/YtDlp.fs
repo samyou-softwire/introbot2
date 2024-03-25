@@ -15,7 +15,7 @@ let downloadWithExecutable path url filename = task {
     startInfo.UseShellExecute <- false
     startInfo.FileName <- path
     startInfo.WindowStyle <- ProcessWindowStyle.Hidden
-    startInfo.Arguments <- $" -P intro-cache -o {filename} -x -q {url}"
+    startInfo.Arguments <- $" -P theme-cache -o {filename} -x -q {url}"
     
     let! returnCode = launchProcess startInfo
     return returnCode = 0
