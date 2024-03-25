@@ -27,7 +27,7 @@ module Bot =
         
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
-        client.add_UserVoiceStateUpdated (userVoiceStateUpdated)
+        client.add_UserVoiceStateUpdated (userVoiceStateUpdated client)
         
         do! Task.Delay(-1)
     }

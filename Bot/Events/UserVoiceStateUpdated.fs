@@ -4,23 +4,28 @@ open System.Threading.Tasks
 open Discord
 open Discord.WebSocket
 
-let playIntro () = task {
-    printfn "playing intro"
+let joinAndPlay (path: string) (channel: SocketVoiceChannel) = task {
+    let! client = channel.ConnectAsync()
+    
     ()
 }
 
-let playOutro () = task {
-    printfn "playing outro"
+let playTheme (theme: string) (user: SocketUser) (channel: SocketVoiceChannel) = task {
+    do! joinAndPlay $"./intro-cache/{theme}-{user.Id}.opus" channel
     ()
 }
 
-let userVoiceStateUpdated (user: SocketUser) (oldState: SocketVoiceState) (newState: SocketVoiceState): Task = task {
+let playIntro = playTheme "intro"
+
+let playOutro = playTheme "outro"
+
+let userVoiceStateUpdated (client: IDiscordClient) (user: SocketUser) (oldState: SocketVoiceState) (newState: SocketVoiceState): Task = task {
     if user.IsBot then return ()
     elif newState.VoiceChannel <> null then
-        do! playIntro()
+        do! playIntro user newState.VoiceChannel
         return ()
     elif oldState.VoiceChannel <> null then
-        do! playOutro()
+        do! playOutro user oldState.VoiceChannel
         return ()
     else return ()
 }
