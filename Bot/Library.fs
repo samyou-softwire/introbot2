@@ -24,7 +24,7 @@ module Bot =
         do! client.LoginAsync(TokenType.Bot, apiKey)
         do! client.StartAsync()
         
-        let commands = [coolCommand; playCommand]
+        let commands = [playCommand]
         
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
