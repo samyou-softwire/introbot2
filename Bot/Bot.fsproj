@@ -15,6 +15,7 @@
         <Compile Include="Events\Ready.fs" />
         <Compile Include="Events\SlashCommandExecuted.fs" />
         <Compile Include="Events\UserVoiceStateUpdated.fs" />
+        <Compile Include="Events\ManageQueue.fs" />
         <Compile Include="Commands\DownloadCommands.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>

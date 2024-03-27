@@ -1,7 +1,7 @@
 ﻿module Bot.Queue
 
 open System.Collections.Generic
-open System.Threading.Tasks
+open Bot.Wrapper.Ffmpeg
 
 type LockedQueue<'a> = {
     queue: Queue<'a>
@@ -23,9 +23,3 @@ let popFromQueue (queue: LockedQueue<'a>) =
     
 let getQueueLength (queue: LockedQueue<'a>) =
     queue.queue.Count
-    
-let rec queueManager (queue: LockedQueue<'a>) = async {
-    do! Async.Sleep(1000)
-    printfn $"{getQueueLength queue}"
-    return! queueManager queue
-}

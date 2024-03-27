@@ -6,6 +6,7 @@ open Discord
 open Discord.WebSocket
 open Bot.Commands.DownloadCommands
 open Bot.Events.Ready
+open Bot.Events.ManageQueue
 open Bot.Events.SlashCommandExecuted
 open Bot.Events.UserVoiceStateUpdated
 open Bot.Queue
