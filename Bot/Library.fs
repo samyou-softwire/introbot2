@@ -26,7 +26,7 @@ module Bot =
         
         let commands = [setIntroCommand; setOutroCommand]
         
-        let queue = newLockedQueue<string>()
+        let queue = newLockedQueue<QueueItem>()
         
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
