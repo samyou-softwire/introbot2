@@ -1,8 +1,11 @@
 module Bot.Events.UserVoiceStateUpdated
 
 open System.Threading.Tasks
+open Bot.Queue
 open Discord
 open Discord.WebSocket
+
+type PlayerQueue = LockedQueue<string>
 
 let joinAndPlay (path: string) (channel: SocketVoiceChannel) = task {
     let! client = channel.ConnectAsync()
@@ -19,7 +22,7 @@ let playIntro = playTheme "intro"
 
 let playOutro = playTheme "outro"
 
-let userVoiceStateUpdated (client: IDiscordClient) (user: SocketUser) (oldState: SocketVoiceState) (newState: SocketVoiceState): Task = task {
+let userVoiceStateUpdated (playerQueue: PlayerQueue) (user: SocketUser) (oldState: SocketVoiceState) (newState: SocketVoiceState): Task = task {
     if user.IsBot then return ()
     elif newState.VoiceChannel <> null then
         do! playIntro user newState.VoiceChannel

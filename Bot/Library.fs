@@ -8,6 +8,7 @@ open Bot.Commands.DownloadCommands
 open Bot.Events.Ready
 open Bot.Events.SlashCommandExecuted
 open Bot.Events.UserVoiceStateUpdated
+open Bot.Queue
 
 module Bot =
     let start = task {
@@ -25,9 +26,11 @@ module Bot =
         
         let commands = [setIntroCommand; setOutroCommand]
         
+        let queue = newLockedQueue<string>()
+        
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
-        client.add_UserVoiceStateUpdated (userVoiceStateUpdated client)
+        client.add_UserVoiceStateUpdated (userVoiceStateUpdated queue)
         
         do! Task.Delay(-1)
     }
