@@ -28,6 +28,9 @@ module Bot =
         
         let queue = newLockedQueue<QueueItem>()
         
+        queueManager queue
+            |> Async.Start
+        
         client.add_Ready (ready client commands)
         client.add_SlashCommandExecuted (slashCommandExecuted client commands)
         client.add_UserVoiceStateUpdated (userVoiceStateUpdated queue)
