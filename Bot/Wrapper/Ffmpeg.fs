@@ -5,8 +5,7 @@ open System.Threading.Tasks
 open Discord.Audio
 open Discord.WebSocket
 
-let playIntoChannelWithExecutable (ffmpegPath: string) (path: string) (channel: SocketVoiceChannel) = task {
-    let! connection = channel.ConnectAsync()
+let playIntoChannelWithExecutable (ffmpegPath: string) (client: IAudioClient) (path: string) (channel: SocketVoiceChannel) = task {
     
     let startInfo = ProcessStartInfo()
     startInfo.CreateNoWindow <- true
@@ -18,17 +17,16 @@ let playIntoChannelWithExecutable (ffmpegPath: string) (path: string) (channel: 
     
     use voiceProcess = Process.Start(startInfo)
     use stream = voiceProcess.StandardOutput.BaseStream
-    use voiceStream = connection.CreatePCMStream(AudioApplication.Music)
+    use voiceStream = client.CreatePCMStream(AudioApplication.Music)
     do! stream.CopyToAsync(voiceStream)
     do! voiceProcess.WaitForExitAsync()
-    connection.Dispose()
 }
 
 let playIntoChannelWindows = playIntoChannelWithExecutable "./downloaded-binaries/ffmpeg.exe"
 
 let playIntoChannelLinux = playIntoChannelWithExecutable "ffmpeg"
 
-let playIntoChannel: string -> SocketVoiceChannel -> Task<unit> =
+let playIntoChannel: IAudioClient -> string -> SocketVoiceChannel -> Task<unit> =
     let platform = System.Environment.GetEnvironmentVariable("PLATFORM")
     match platform with
     | "windows" -> playIntoChannelWindows
