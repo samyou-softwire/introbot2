@@ -7,10 +7,13 @@ open Bot.Wrapper.SlashCommandBuilder
 open Bot.Wrapper.SlashCommandOptionBuilder
 
 let downloadCommandHandler (prefix: string) (_end: string) (start: string) (url: string) (client: IDiscordClient) (command: SocketSlashCommand) = task {
-    printfn $"start {start}"
-    printfn $"end {_end}"
     do! command.RespondAsync("downloading")
-    let! success = download url $"{prefix}-{command.User.Id}.%%(ext)s"
+    
+    let start = if start <> null then start else "00:00"
+    let _end = if _end <> null then _end else "inf"
+    let range = $"{start}-{_end}"
+    
+    let! success = download url range $"{prefix}-{command.User.Id}.%%(ext)s"
     do! command.ModifyOriginalResponseAsync(fun message -> message.Content <- if success then "done" else "error")
         |> Async.AwaitTask |> Async.Ignore
 }
