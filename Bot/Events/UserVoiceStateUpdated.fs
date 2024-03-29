@@ -1,5 +1,6 @@
 module Bot.Events.UserVoiceStateUpdated
 
+open System.IO
 open System.Threading.Tasks
 open Bot.Queue
 open Discord.WebSocket
@@ -11,15 +12,16 @@ type QueueItem = {
 
 type PlayerQueue = LockedQueue<QueueItem>
 
-let joinAndPlay (path: string) (queue: PlayerQueue) (channel: SocketVoiceChannel) = task {
-    pushToQueue queue {
-        path = path
-        channel = channel 
-    }
+let addToQueue (path: string) (queue: PlayerQueue) (channel: SocketVoiceChannel) = task {
+    if File.Exists(path) then
+        pushToQueue queue {
+            path = path
+            channel = channel 
+        }
 }
 
 let playTheme (theme: string) (queue: PlayerQueue) (user: SocketUser) (channel: SocketVoiceChannel) = task {
-    do! joinAndPlay $"./theme-cache/{theme}-{user.Id}.opus" queue channel
+    do! addToQueue $"./theme-cache/{theme}-{user.Id}.opus" queue channel
 }
 
 let playIntro = playTheme "intro"
