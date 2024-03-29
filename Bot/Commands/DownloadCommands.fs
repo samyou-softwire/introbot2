@@ -6,7 +6,9 @@ open Bot.Music.YtDlp
 open Bot.Wrapper.SlashCommandBuilder
 open Bot.Wrapper.SlashCommandOptionBuilder
 
-let downloadCommandHandler (prefix: string) (url: string) (client: IDiscordClient) (command: SocketSlashCommand) = task {
+let downloadCommandHandler (prefix: string) (_end: string) (start: string) (url: string) (client: IDiscordClient) (command: SocketSlashCommand) = task {
+    printfn $"start {start}"
+    printfn $"end {_end}"
     do! command.RespondAsync("downloading")
     let! success = download url $"{prefix}-{command.User.Id}.%%(ext)s"
     do! command.ModifyOriginalResponseAsync(fun message -> message.Content <- if success then "done" else "error")
@@ -21,6 +23,16 @@ let setIntroCommand =
         newStringOption()
         |> withOptionName "url"
         |> withOptionDescription "youtube url" )
+    |> withCommandOption (
+        newStringOption()
+        |> withOptionName "start"
+        |> withOptionDescription "xx:xx" 
+        |> withOptionOptional )
+    |> withCommandOption (
+        newStringOption()
+        |> withOptionName "end"
+        |> withOptionDescription "xx:xx" 
+        |> withOptionOptional )
     |> withHandler (downloadCommandHandler "intro")
 
 let setOutroCommand =
@@ -31,4 +43,14 @@ let setOutroCommand =
         newStringOption()
         |> withOptionName "url"
         |> withOptionDescription "youtube url" )
+    |> withCommandOption (
+        newStringOption()
+        |> withOptionName "start"
+        |> withOptionDescription "xx:xx" 
+        |> withOptionOptional )
+    |> withCommandOption (
+        newStringOption()
+        |> withOptionName "end"
+        |> withOptionDescription "xx:xx" 
+        |> withOptionOptional )
     |> withHandler (downloadCommandHandler "outro")

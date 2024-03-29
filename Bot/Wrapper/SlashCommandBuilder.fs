@@ -36,7 +36,7 @@ let withCommandOption<'a, 'b> (optionBuilder: CommandOptionBuilder<'b>) (builder
     arguments = optionBuilder._type :: builder.arguments
 }
 
-let withHandler<'a> (handler: 'a -> IDiscordClient -> SocketSlashCommand -> Task<unit>) (builder: CommandBuilder<'a -> IDiscordClient -> SocketSlashCommand -> Task<unit>>) = {
+let withHandler<'a> (handler: 'a) (builder: CommandBuilder<'a>) = {
     properties = builder.innerBuilder.Build()
     handler = fun (client: IDiscordClient) (command: SocketSlashCommand) ->
         let options = List.ofSeq command.Data.Options

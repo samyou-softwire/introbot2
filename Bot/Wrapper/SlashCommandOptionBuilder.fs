@@ -16,7 +16,7 @@ let newStringOption: unit -> CommandOptionBuilder<string> = fun _ -> {
     _type = String 
 } 
 
-let newIntegerOption: CommandOptionBuilder<int> = {
+let newIntegerOption: unit -> CommandOptionBuilder<int> = fun _ -> {
     innerBuilder = SlashCommandOptionBuilder().WithType(ApplicationCommandOptionType.Integer)
     _type = Integer
 }
@@ -29,6 +29,6 @@ let withOptionDescription<'a> (description: string) (builder: CommandOptionBuild
     builder with innerBuilder = builder.innerBuilder.WithDescription(description) 
 }
 
-let withOptionRequired<'a> (isRequired: bool) (builder: CommandOptionBuilder<'a>): CommandOptionBuilder<'a> = {
-    builder with innerBuilder = builder.innerBuilder.WithRequired(isRequired)
+let withOptionOptional<'a> (builder: CommandOptionBuilder<'a>): CommandOptionBuilder<'a> = {
+    builder with innerBuilder = builder.innerBuilder.WithRequired(false)
 }
