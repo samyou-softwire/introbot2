@@ -3,7 +3,10 @@
 open Discord.WebSocket
 
 let rec doHandle (options: SocketSlashCommandDataOption list) (handler: obj) client command =
-    let args = List.map (fun (option: SocketSlashCommandDataOption) -> option.Value) options
+    let args =
+        options
+        |> List.map (fun (option: SocketSlashCommandDataOption) -> option.Value)
+        |> List.rev
     let fnType = handler.GetType()
     let methodInfo =
         fnType.GetMethods()
