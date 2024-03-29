@@ -26,7 +26,7 @@ let playIntoChannelWithExecutable (ffmpegPath: string) (path: string) (channel: 
 
 let playIntoChannelWindows = playIntoChannelWithExecutable "./downloaded-binaries/ffmpeg.exe"
 
-let playIntoChannelLinux = playIntoChannelWithExecutable "./downloaded-binaries/ffmpeg"
+let playIntoChannelLinux = playIntoChannelWithExecutable "ffmpeg"
 
 let playIntoChannel: string -> SocketVoiceChannel -> Task<unit> =
     let platform = System.Environment.GetEnvironmentVariable("PLATFORM")
