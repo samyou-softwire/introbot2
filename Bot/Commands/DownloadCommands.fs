@@ -25,11 +25,11 @@ let setIntroCommand =
     |> withCommandOption (
         newStringOption()
         |> withOptionName "start"
-        |> withOptionDescription "xx:xx")
+        |> withOptionDescription "format: mm:ss")
     |> withCommandOption (
         newStringOption()
         |> withOptionName "end"
-        |> withOptionDescription "xx:xx")
+        |> withOptionDescription "format: mm:ss or inf")
     |> withHandler (downloadCommandHandler "intro")
 
 let setOutroCommand =
@@ -43,9 +43,9 @@ let setOutroCommand =
     |> withCommandOption (
         newStringOption()
         |> withOptionName "start"
-        |> withOptionDescription "xx:xx")
+        |> withOptionDescription "format: mm:ss")
     |> withCommandOption (
         newStringOption()
         |> withOptionName "end"
-        |> withOptionDescription "xx:xx")
+        |> withOptionDescription "format: mm:ss or inf")
     |> withHandler (downloadCommandHandler "outro")
