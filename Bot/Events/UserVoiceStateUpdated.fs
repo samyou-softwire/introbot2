@@ -30,9 +30,12 @@ let playOutro = playTheme "outro"
 
 let userVoiceStateUpdated (queue: PlayerQueue) (user: SocketUser) (oldState: SocketVoiceState) (newState: SocketVoiceState): Task = task {
     if user.IsBot then return ()
-    elif newState.VoiceChannel <> null then
-        do! playIntro queue user newState.VoiceChannel
-    elif oldState.VoiceChannel <> null then
-        do! playOutro queue user oldState.VoiceChannel
+    let oldVoiceChannel = oldState.VoiceChannel
+    let newVoiceChannel = newState.VoiceChannel
+    if oldVoiceChannel <> null && newVoiceChannel <> null && oldVoiceChannel.Id = newVoiceChannel.Id then return ()
+    elif newVoiceChannel <> null then
+        do! playIntro queue user newVoiceChannel
+    elif oldVoiceChannel <> null then
+        do! playOutro queue user oldVoiceChannel
     else ()
 }
