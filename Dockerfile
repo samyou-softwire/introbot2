@@ -13,7 +13,8 @@ WORKDIR /App
 RUN apt-get update
 RUN apt-get install python3 -y
 RUN apt-get install ffmpeg -y
-RUN apt-get install libopus-dev -y
+RUN apt-get install libopus0 libopus-dev -y
+RUN apt-get install libsodium23 libsodium-dev -y
 
 COPY --from=build-env /App/out .
 COPY .env ./
