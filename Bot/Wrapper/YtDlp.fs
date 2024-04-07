@@ -15,7 +15,7 @@ let downloadWithExecutable path url range filename = task {
     startInfo.UseShellExecute <- false
     startInfo.FileName <- path
     startInfo.WindowStyle <- ProcessWindowStyle.Hidden
-    startInfo.Arguments <- $" -P theme-cache -o {filename} -x -q {url}  --download-section \"*{range}\""
+    startInfo.Arguments <- $" -P theme-cache -o {filename} -x -q {url} --download-section \"*{range}\" --max-filesize 100M"
     
     let! returnCode = launchProcess startInfo
     return returnCode = 0
