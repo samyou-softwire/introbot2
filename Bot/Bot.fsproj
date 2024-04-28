@@ -11,11 +11,11 @@
         <Compile Include="Wrapper\SlashCommandBuilder.fs"/>
         <Compile Include="Wrapper\YtDlp.fs" />
         <Compile Include="Wrapper\Ffmpeg.fs" />
-        <Compile Include="Queue.fs" />
+        <Compile Include="QueueManager\Queue.fs" />
+        <Compile Include="QueueManager\QueueThread.fs" />
         <Compile Include="Events\Ready.fs" />
         <Compile Include="Events\SlashCommandExecuted.fs" />
         <Compile Include="Events\UserVoiceStateUpdated.fs" />
-        <Compile Include="Events\ManageQueue.fs" />
         <Compile Include="Commands\DownloadCommands.fs" />
         <Compile Include="Library.fs"/>
     </ItemGroup>

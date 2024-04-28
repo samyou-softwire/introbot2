@@ -1,7 +1,12 @@
-﻿module Bot.Queue
+﻿module Bot.QueueManager.Queue
 
 open System.Collections.Generic
-open Bot.Wrapper.Ffmpeg
+open Discord.WebSocket
+
+type QueueItem = {
+    path: string;
+    channel: SocketVoiceChannel;
+}
 
 type LockedQueue<'a> = {
     queue: Queue<'a>

@@ -2,13 +2,10 @@ module Bot.Events.UserVoiceStateUpdated
 
 open System.IO
 open System.Threading.Tasks
-open Bot.Queue
+open Bot.QueueManager.Queue
 open Discord.WebSocket
 
-type QueueItem = {
-    path: string;
-    channel: SocketVoiceChannel;
-}
+
 
 type PlayerQueue = LockedQueue<QueueItem>
 
