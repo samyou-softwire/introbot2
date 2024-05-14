@@ -4,6 +4,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "App", "App\App.fsproj", "{6
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Bot", "Bot\Bot.fsproj", "{4FC7A403-BF00-4F0E-825B-DF8FB2D4F995}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Bot.Player", "Bot.Player\Bot.Player.fsproj", "{5FF99CD4-CE80-445D-A814-3E1906EA475B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4FC7A403-BF00-4F0E-825B-DF8FB2D4F995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FC7A403-BF00-4F0E-825B-DF8FB2D4F995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FC7A403-BF00-4F0E-825B-DF8FB2D4F995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF99CD4-CE80-445D-A814-3E1906EA475B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF99CD4-CE80-445D-A814-3E1906EA475B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF99CD4-CE80-445D-A814-3E1906EA475B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF99CD4-CE80-445D-A814-3E1906EA475B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
