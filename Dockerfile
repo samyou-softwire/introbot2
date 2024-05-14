@@ -13,7 +13,7 @@ WORKDIR /App
 RUN apt-get update && apt-get install python3 ffmpeg libopus0 libopus-dev libsodium23 libsodium-dev -y
 
 COPY --from=build-env /App/out .
-COPY .env ./
+
 COPY downloaded-binaries/* ./downloaded-binaries/
 
 ENTRYPOINT ["dotnet", "App.dll"]
