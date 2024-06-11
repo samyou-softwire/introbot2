@@ -14,9 +14,16 @@ spec:
       labels:
         app: introbot2
     spec:
+      volumes:
+        - name: introbot2-storage-storage
+          persistentVolumeClaim:
+            claimName: introbot2-storage-claim
       containers:
         - name: introbot2
           image: samyousoftwire/introbot:latest
           envFrom:
             - secretRef:
                 name: test-secret
+          volumeMounts:
+            - mountPath: "/introbot"
+              name: introbot2-storage-storage

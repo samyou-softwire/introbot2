@@ -1,0 +1,14 @@
+﻿apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: introbot2-storage
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
