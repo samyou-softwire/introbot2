@@ -7,3 +7,4 @@ riderModule.iml
 .env
 /downloaded-binaries
 /theme-cache
+secret.yaml

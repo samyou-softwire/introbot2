@@ -1,0 +1,5 @@
+﻿kubectl create deployment introbot --image=samyousoftwire/introbot:latest
+kubectl apply -f .\kubernetes\secret.yaml
+
+workloads make pods
+pods is like one container
