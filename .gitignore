@@ -8,3 +8,5 @@ riderModule.iml
 /downloaded-binaries
 /theme-cache
 secret.yaml
+id_rsa
+id_rsa.pub
