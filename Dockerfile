@@ -16,4 +16,6 @@ COPY --from=build-env /App/out .
 
 COPY downloaded-binaries/* ./downloaded-binaries/
 
+COPY .env .
+
 ENTRYPOINT ["dotnet", "App.dll"]

@@ -17,7 +17,8 @@ module Bot =
             printfn $"%s{message.ToString()}"
             Task.CompletedTask
             
-        let client = new DiscordSocketClient()
+        let config = new DiscordSocketConfig(UseInteractionSnowflakeDate = false)
+        let client = new DiscordSocketClient(config)
         client.add_Log log
         
         let apiKey = Environment.GetEnvironmentVariable("API_KEY")

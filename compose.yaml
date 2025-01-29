@@ -1,0 +1,5 @@
+services:
+  bot:
+    build: .
+    volumes:
+      - ./theme-cache:/App/theme-cache
